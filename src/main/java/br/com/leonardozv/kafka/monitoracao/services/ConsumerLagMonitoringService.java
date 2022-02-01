@@ -14,15 +14,14 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 @Service
-public class LagMonitoringService {
+public class ConsumerLagMonitoringService {
 
-    private static final Logger log = LoggerFactory.getLogger(LagMonitoringService.class);
+    private static final Logger log = LoggerFactory.getLogger(ConsumerLagMonitoringService.class);
 
     private final KafkaConfiguration kafkaConfiguration;
 
@@ -31,7 +30,7 @@ public class LagMonitoringService {
     private final KafkaConsumer<String, String> consumer;
 
     @Autowired
-    public LagMonitoringService(KafkaConfiguration kafkaConfiguration) {
+    public ConsumerLagMonitoringService(KafkaConfiguration kafkaConfiguration) {
 
         this.kafkaConfiguration = kafkaConfiguration;
         this.adminClient = AdminClient.create(kafkaConfiguration.adminConfig());
@@ -52,7 +51,7 @@ public class LagMonitoringService {
             int partition = lagEntry.getKey().partition();
             Long lag = lagEntry.getValue();
 
-            log.info("Data e Hora = {} | Tópico = {}, Partição = {}, Lag = {}", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")), topic, partition, lag);
+            log.info("Date and Time = {} | Topic = {}, Partition = {}, Lag = {}", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")), topic, partition, lag);
 
         }
 
